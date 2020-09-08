@@ -48,10 +48,12 @@ df['Returns']  = np.log(df[source] / df[source].shift(1))
 df['Strategy'] = df['Position'].shift(1) * df['Returns']
 
 ax = df[['Returns', 'Strategy']].cumsum().apply(np.exp).plot(figsize=(20,12))
-df['Position'].plot(ax=ax, secondary_y='Position', style='--', alpha=0.2)
+df['Position'].plot(ax=ax, secondary_y='Position', style='--')
 #df[['SMA_short', 'SMA_long']].plot(ax=ax, secondary_y='SMA')
 ax.get_legend().set_bbox_to_anchor((0.25, 0.85))
 perf = np.exp(df[['Returns', 'Strategy']].sum())
 ratio = round(perf[1]/perf[0], 2)
+print(perf)
 print(f'Strategy outperforms buy and hold {ratio}x')
+plt.tight_layout()
 plt.show()
