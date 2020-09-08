@@ -15,11 +15,11 @@ git clone git@github.com:LinuxFan2718/crypto-trading.git
 
 [Bitcoin prices on the Binance exchange](https://www.cryptodatadownload.com/data/binance/)
 
-The example code uses BTC/USD Hourly data.
+The example code uses BTC/USD Daily data.
 
 A data file is included in this repo but you should download an up-to-date file.
 
-Replace the existing `Binance_BTCUSDT_1h.csv` file with the one you download.
+Replace the existing csv file with the one you downloaded.
 
 ## Install libraries
 
