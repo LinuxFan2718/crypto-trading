@@ -1,10 +1,12 @@
 # run this script to discover optimal values for SMA long and short
-
 import numpy as np
 import pandas as pd
 import datetime
 from pylab import mpl, plt
 from itertools import product
+
+# 0 for exit market, -1 for go short
+NOT_LONG = 0
 
 # parse Unix timestamps into a datetime that pandas understands
 # https://stackoverflow.com/a/34122596
@@ -44,8 +46,9 @@ for SMA1, SMA2 in product(sma1, sma2):
   df.dropna(inplace=True)
   # trading rules
   # Go long =  +1 when the shorter SMA is above the longer SMA
+  # exit market = 0
   # Go short = -1 when the shorter SMA is below the longer SMA
-  df['Position'] = np.where(df['SMA1'] > df['SMA2'], 1, -1)
+  df['Position'] = np.where(df['SMA1'] > df['SMA2'], 1, NOT_LONG)
   df['Strategy'] = df['Position'].shift(1) * df['Returns']
   df.dropna(inplace=True)
   # store results to find optimum parameters

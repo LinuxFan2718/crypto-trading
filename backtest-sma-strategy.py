@@ -1,10 +1,15 @@
 # run this script to generate a plot for given parameters
-
 import numpy as np
 import pandas as pd
 import datetime
 from pylab import mpl, plt
 from itertools import product
+
+# 0 for exit market, -1 for go short
+NOT_LONG = 0
+# Trading Strategy
+SMA1 = 76
+SMA2 = 110
 
 # Data Import
 # hourly data
@@ -29,10 +34,6 @@ source = 'Close'
 plt.style.use('seaborn')
 mpl.rcParams['font.family'] = 'serif'
 
-# Trading Strategy
-SMA1 = 76
-SMA2 = 110
-
 df['SMA_short'] = df[source].rolling(SMA1).mean()
 df['SMA_long'] = df[source].rolling(SMA2).mean()
 
@@ -40,7 +41,7 @@ df.dropna(inplace=True)
 # trading rules
 # Go long =  +1 when the shorter SMA is above the longer SMA
 # Go short = -1 when the shorter SMA is below the longer SMA
-df['Position'] = np.where(df['SMA_short'] > df['SMA_long'], 1, -1)
+df['Position'] = np.where(df['SMA_short'] > df['SMA_long'], 1, NOT_LONG)
 
 # Vectorized Backtesting
 df['Returns']  = np.log(df[source] / df[source].shift(1))
