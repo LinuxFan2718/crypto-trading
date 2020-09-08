@@ -32,3 +32,7 @@ pip install -r requirements.txt
 ```bash
 python backtest-sma-strategy.py
 ```
+
+## References
+
+[Python For Finance](https://www.amazon.com/Python-Finance-Mastering-Data-Driven-ebook/dp/B07L8NMW2P/)
