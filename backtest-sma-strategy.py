@@ -8,8 +8,8 @@ from itertools import product
 # 0 for exit market, -1 for go short
 NOT_LONG = -1
 # Trading Strategy
-SMA1 = 76
-SMA2 = 110
+SMA1 = 34
+SMA2 = 140
 
 # Data Import
 # hourly data
@@ -47,9 +47,11 @@ df['Position'] = np.where(df['SMA_short'] > df['SMA_long'], 1, NOT_LONG)
 df['Returns']  = np.log(df[source] / df[source].shift(1))
 df['Strategy'] = df['Position'].shift(1) * df['Returns']
 
-ax = df[['Returns', 'Strategy']].cumsum().apply(np.exp).plot(figsize=(20,12))
+#ax = df[['Returns', 'Strategy']].cumsum().apply(np.exp).plot(figsize=(20,12))
+
+ax = df[[source, 'SMA_short', 'SMA_long']].plot(secondary_y='SMA')
 df['Position'].plot(ax=ax, secondary_y='Position', style='--')
-#df[['SMA_short', 'SMA_long']].plot(ax=ax, secondary_y='SMA')
+
 ax.get_legend().set_bbox_to_anchor((0.25, 0.85))
 perf = np.exp(df[['Returns', 'Strategy']].sum())
 ratio = round(perf[1]/perf[0], 2)
