@@ -20,6 +20,7 @@ source = 'Close'
 
 plt.style.use('seaborn')
 mpl.rcParams['font.family'] = 'serif'
+mpl.rcParams['font.size'] = 12
 
 df['SMA_short'] = df[source].rolling(SMA1).mean()
 df['SMA_long'] = df[source].rolling(SMA2).mean()
