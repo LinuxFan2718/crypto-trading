@@ -1,5 +1,5 @@
 # crypto-trading
-Code related to crypto trading plots etc.
+A simple algorithmic trading bot for Bitcoin. Run the script to see a plot of performance
 
 ## Install python 3.8.5
 
