@@ -6,17 +6,12 @@ from pylab import mpl, plt
 from itertools import product
 
 # 0 for exit market, -1 for go short
-NOT_LONG = 0
-
-# parse Unix timestamps into a datetime that pandas understands
-# https://stackoverflow.com/a/34122596
-# def dateparse(time_in_secs):
-#     return datetime.datetime.fromtimestamp(float(time_in_secs))
+NOT_LONG = -1
 
 # Data Import
 # hourly data
 #bitcoin_csv = 'Binance_BTCUSDT_1h.csv'
-# daily date
+# daily data
 bitcoin_csv = 'Binance_BTCUSDT_d.csv'
 raw = pd.read_csv(
   bitcoin_csv,
@@ -34,8 +29,14 @@ source = 'Close'
 
 # this script based on the one in Python for Finance by Yves Hilpisch
 # page 490
-sma1 = range(20, 91, 4)
-sma2 = range(110, 301, 10)
+sma1 = range(20, 91, 2)
+sma2 = range(50, 241, 5)
+
+# initialize an empty matrix to store performance data for SMA pairs
+parameter_view = pd.DataFrame()
+parameter_view = parameter_view.reindex(columns = sma2)
+parameter_view = parameter_view.reindex(parameter_view.index.tolist() + list(sma1))
+
 results = pd.DataFrame()
 for SMA1, SMA2 in product(sma1, sma2):
   df = pd.DataFrame(full_df[source])
@@ -59,6 +60,24 @@ for SMA1, SMA2 in product(sma1, sma2):
                'STRATEGY': perf['Strategy'],
                'OUT': perf['Strategy'] - perf['Returns']},
                index=[0]), ignore_index=True)
+  
+  # store performance for visualization
+  ratio = round(perf[1]/perf[0], 2)
+  parameter_view.at[SMA1, SMA2] = ratio
+
 
 results.info()
 print(results.sort_values('OUT', ascending=False).head(7))
+
+fig, ax = plt.subplots()
+mat = ax.matshow(parameter_view)
+cax = fig.colorbar(mat)
+
+plt.xticks(range(len(parameter_view.columns)), parameter_view.columns)
+plt.yticks(range(len(parameter_view.index)), parameter_view.index)
+# ax.set_xticklabels([None] + list(parameter_view.columns))
+# ax.set_yticklabels([None] + list(parameter_view.index))
+# ax.axis('image')
+
+plt.tight_layout()
+plt.show()

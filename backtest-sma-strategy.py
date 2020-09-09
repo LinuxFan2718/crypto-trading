@@ -6,7 +6,7 @@ from pylab import mpl, plt
 from itertools import product
 
 # 0 for exit market, -1 for go short
-NOT_LONG = 0
+NOT_LONG = -1
 # Trading Strategy
 SMA1 = 76
 SMA2 = 110
